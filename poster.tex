@@ -1,0 +1,377 @@
+% Poster originally adapted from James Lloyd's template
+% https://github.com/jamesrobertlloyd/cbl-tikz-poster
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Document class
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\documentclass[landscape,a0b,final,a4resizeable]{a0poster}
+%\documentclass[portrait,a0b,final,a4resizeable]{a0poster}
+%\documentclass[portrait,a0,final]{a0poster}
+\documentclass[portrait,a0b,final]{a0poster}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Basic packages
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{multicol}
+\usepackage{color}
+\usepackage{shadow}
+\usepackage{morefloats}
+\usepackage[pdftex]{graphicx}
+\usepackage{rotating}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{mathtools}
+\usepackage{array}
+\usepackage{nth}
+\usepackage{booktabs}
+\usepackage{dsfont}
+
+\usepackage[round,comma]{natbib}
+
+% Bibliography without title
+\makeatletter
+\renewcommand\@biblabel[1]{}
+\renewenvironment{thebibliography}[1]
+{%\section*{\refname}%
+\@mkboth{\MakeUppercase\refname}{\MakeUppercase\refname}%
+\list{}%
+{\leftmargin0pt
+\@openbib@code
+\usecounter{enumiv}}%
+\sloppy
+\clubpenalty4000
+\@clubpenalty \clubpenalty
+\widowpenalty4000%
+\sfcode`\.\@m}
+{\def\@noitemerr
+{\@latex@warning{Empty `thebibliography' environment}}%
+\endlist}
+\makeatother
+
+\renewcommand{\bibsection}{}
+
+% Caption for use outside floats
+\newcommand{\mycaption}[1]{\parbox{\linewidth}{\large \vspace{10pt} #1 \vspace{10pt}}}
+
+% Subfigures, etc.
+\usepackage{subfigure}
+
+%\usepackage{pagegrid}
+\usepackage[OT1]{fontenc}
+\usepackage{eucal}
+
+% My maths macros
+\usepackage{/Users/kelly/Workspace/Utilities/luke-macros}
+
+\newcommand{\oemph}[1]{\textcolor{orange}{#1}}
+\newcommand{\bemph}[1]{\textcolor{RoyalBlue}{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% TIKZ packages and common definitions
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% \usepackage{picins}
+\usepackage{tikz}
+\usetikzlibrary{shapes,shapes.geometric,arrows,chains,matrix,positioning,scopes,calc}
+
+\tikzstyle{mybox} = [draw=white,rectangle]
+
+\graphicspath{{/Users/kelly/Documents/Papers/21-Coupling/draft}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Some standard colours
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\definecolor{dauphinedarkblue}{rgb}{0.165,0.24,0.44}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Some look and feel definitions
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setlength{\columnsep}{0.05\textwidth}
+\setlength{\columnseprule}{0.00025\textwidth}
+\setlength{\parindent}{1cm}
+\setlength{\parskip}{1cm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \mysection - replacement for \section*
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\tikzstyle{mysection} = [rectangle,
+                         draw=none,
+                         shade,
+                         outer color=dauphinedarkblue,
+                         inner color=dauphinedarkblue,
+                         text width=0.97\columnwidth,
+                         text centered,
+                         text=white,
+                         rounded corners=20pt,
+                         minimum height=3cm]%0.11\columnwidth]
+
+\newcommand{\mysection}[1]
+{
+	\begin{center}
+		\begin{tikzpicture}
+			\node[mysection] {\bfseries\LARGE#1};
+		\end{tikzpicture}
+	\end{center}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% \myalign - replacement for {align*}
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%\tikzstyle{myalign} = [draw, rectangle,
+%	text width=\columnwidth,
+%	text centered,
+%	text=black]
+%
+%\newcommand{\myalign}[1]
+%{
+%	\begin{center}
+%		\begin{tikzpicture}
+%			\node[myalign] {\Large $ \begin{aligned} #1 \end{aligned} $};
+%		\end{tikzpicture}
+%	\end{center}
+%}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Set the font
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand{\familydefault}{cmss}
+\sffamily
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Poster environment
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newenvironment{poster}
+{
+    \begin{center}
+    	\hspace{-2in}
+    	\begin{minipage}[c]{0.96\textwidth}
+}
+{
+    	\end{minipage}
+    \end{center}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% The document environment starts here
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Begin the poster environment - centres things etc
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{poster}
+
+% \vspace{1\baselineskip}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Draw the header as a TIKZ picture
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{center}
+	\begin{tikzpicture}
+		\begin{scope}
+			\node[anchor=west, inner sep=0, text width=0.3\textwidth] (logo) at (0, 0) {
+				\includegraphics[width=\textwidth]{/Users/kelly/Workspace/Utilities/Ceremade/Seul/Ceremade-Blue-Tutelle-CMJN.pdf}
+			};
+			\node[anchor=west, inner sep=0, text width=0.65\textwidth, text centered, font=\Huge] (Title) at ($ (logo.east) + (0.05\textwidth, 0) $) {
+				{\Huge \textbf{Lagged couplings for phylogenetic inference}}\\ {\huge Diagnosing convergence of MCMC on trees}\\
+				{\huge Luke J. Kelly, Robin J. Ryder and Grégoire Clarté}
+			};
+		\end{scope}
+	\end{tikzpicture}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Spacing between title and main body
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\vspace{1\baselineskip}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Main body
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\LARGE
+
+\begin{tikzpicture}
+\begin{scope}
+
+\node (n1) [text width=0.3\textwidth, align=justify, anchor=north, inner sep=0] at (0, 0)
+{
+    \mysection{Problem}
+
+    Phylogenetics is the problem of reconstructing the ancestral history of a set of taxa descended from a common ancestor. MCMC is the primary tool for Bayesian phylogenetic inference. \oemph{We lack methods to properly quantify MCMC convergence or mixing on the space of trees and model parameters} so struggle to separate modelling and fitting errors.
+
+    \begin{center}
+        \includegraphics[width=\textwidth]{/Users/kelly/Documents/Thesis/Figures/POLY/POLY0/densB_EE.pdf}
+        \mycaption{MCMC samples for the tree component (topology and branch lengths) of a phylogenetic posterior distribution; data are lexical traits in Eastern Polynesian languages, time is in years before the present, and the most frequently sampled topology is in blue.}
+    \end{center}
+};
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\node (n2) [text width=0.3\textwidth, align=justify, anchor=north, inner sep=0] at ($ (n1.south) + (0, -0.025\textwidth) $)
+{
+    \mysection{Stochastic Dollo model}
+
+    A branching process \tikz{\node[draw,shape=circle,minimum size=24pt,fill=white] {};} on sets of traits is the phylogeny of the observed taxa \tikz{\node[draw,shape=circle,minimum size=24pt,fill=black] {};}.
+    \begin{itemize}
+        \item New traits are \textcolor{Turquoise}{born} \tikz{\node[draw,shape=diamond,minimum size=24pt,fill=Turquoise] {};} at rate $ \lambda $.
+        \item Trait instances \textcolor{Mulberry}{die} {\tikz{\node[draw,star,star points=7,star point ratio=0.8,minimum size=24pt,fill=Mulberry] {};}} independently at rate $ \mu $ and \textcolor{NavyBlue}{transfer} \tikz{\node[draw,circle,minimum size=24pt,fill=NavyBlue] {};} copies to other species at per capita rate $ \beta $.
+    \end{itemize}
+    We record the terminal outcome of this process at the leaves.
+    \begin{center}
+        \includegraphics[width=\textwidth]{figs/PhytreePatternTrait.pdf}
+        \mycaption{\large A phylogenetic tree and \textcolor{Orange}{trait history} drawn from the Stochastic Dollo model. \textcolor{Goldenrod}{Catastrophes} \tikz{\node[draw,circle,minimum size=24pt,fill=Goldenrod] {};} represent bursts of evolutionary activity; data are missing at random at each leaf.}
+    \end{center}
+    \bemph{We want to infer the tree, model parameters and catastrophe locations.}
+};
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\node (n3) [text width=0.3\textwidth, align=justify, anchor=north, inner sep=0] at ($ (n2.south) + (0, -0.025\textwidth) $)
+{
+    \mysection{References}
+    \nocite{jacob20,biswas19,kelly21}
+    \small
+    \bibliographystyle{unsrtnat}
+    \bibliography{references.bib}
+};
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\node (n5) [text width=0.65\textwidth, align=justify, anchor=north west, inner sep=0] at ($ (n1.north east) + (0.05\textwidth, 0) $)
+{
+    \mysection{MCMC on phylogenies}
+
+    \begin{multicols}{2}
+        Our MCMC proposal kernel is a mixture of 19 local kernels.
+        % \setlength{\parindent}{1cm}
+        Subtree prune-and-regraft (SPR) proposals detach a randomly chosen subtree and reattach it at a randomly chosen destination along the tree.
+
+        \begin{center}
+            \includegraphics[width=\linewidth]{figs/spr}
+            \mycaption{\centering SPR moves the subtree with root $ i $ to branch leading into $ j $.}
+        \end{center}
+    \end{multicols}
+    \bemph{Existing methods to diagnose MCMC convergence on trees are ad hoc, such as comparing multiple low-dimensional summaries across one or more chains.}
+};
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\node (n6) [text width=0.65\textwidth, align=justify, anchor=north west, inner sep=0] at ($ (n5.south west) + (0, -0.025\textwidth) $)
+{
+    \mysection{Coupling}
+
+    \begin{multicols}{2}
+        A coupling of two distributions $ p $ and $ q $ on space $ \cX $ is a joint distribution $ \gamma $ with marginals $ p $ and $ q $. In order to debias MCMC estimators, \citet{jacob20} describe how to couple the MCMC transition kernels for lag-$ 1 $ staggered chains $ (X_t) $ and $ (Y_{t-1}) $ with common target $ \pi $ so that they meet at a finite random time $ \tau $ and remain faithful thereafter. \citet{biswas19} use chains coupled at lag $ l $ to estimate the following bound on the total variation distance between $ \pi_t = \cL_{X_t} $ and $ \pi $,
+        \[
+            d_{\mathrm{TV}}(\pi_t, \pi) \leq \EE\left[0 \vee \ceil*{\frac{\tau - l - t}{l}}\right].
+        \]
+    \end{multicols}
+};
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\node (n7) [text width=0.65\textwidth, align=justify, anchor=north west, inner sep=0] at ($ (n6.south west) + (0, -0.025\textwidth) $)
+{
+    \mysection{Coupling tree proposals}
+
+    At each iteration, we reindex $ Y $ so that nodes with matching leaf sets have identical indices.
+    \begin{multicols}{3}
+        \begin{center}
+            \centering
+            \includegraphics[width=\linewidth]{figs/housekeeping-x}
+            \mycaption{\centering State $ X $}
+        \end{center}
+        \hfill
+        \begin{center}
+            \centering
+            \includegraphics[width=\linewidth]{figs/housekeeping-y1}
+            \mycaption{\centering State $ Y $ before reindexing}
+        \end{center}
+        \hfill
+        \begin{center}
+            \centering
+            \includegraphics[width=\linewidth]{figs/housekeeping-y2}
+            \mycaption{\centering State $ Y $ after reindexing}
+        \end{center}
+    \end{multicols}
+    We then sample from a coupling at each step of a proposal to bring the states closer together. In the above example, if we propose to move subtree with root $ i = 1 $ in both and sample the destination branches from a maximal coupling, then the proposed topologies will be identical.
+};
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\node (n8) [text width=0.65\textwidth, align=justify, anchor=north west, inner sep=0] at ($ (n7.south west) + (0, -0.025\textwidth) $)
+{
+    \mysection{Illustration}
+
+    We fit the Stochastic Dollo model to lexical trait data from Eastern Polynesian languages. We compute the Average Standard Deviation of Split Frequencies (ASDSF) on sliding windows of samples from 100 marginal chains. We estimate the above bound on the total variation distance between $ \pi_t $ and $ \pi $ from the meeting times of 100 pairs of chains at each of 4 lags.
+
+    \begin{multicols}{2}
+        \begin{center}
+            \includegraphics[width=\linewidth, trim = 0cm 0cm 0.15cm 1.5cm, clip]{analysis-figs/20210807-polynesian/asdsf.pdf}
+            \mycaption{\centering ASDSF on disjoint sliding windows of samples.}
+        \end{center}
+        \begin{center}
+            \includegraphics[width=\linewidth, trim = 0cm 0cm 0cm 1.5cm, clip]{analysis-figs/20210807-polynesian/tv.pdf}
+            \mycaption{\centering Estimated TV bounds on tree and model parameters.}
+        \end{center}
+    \end{multicols}
+
+    In contrast to ASDSF and other approaches, \oemph{the estimated TV bounds diagnose convergence on the entire space} of trees, branch lengths and other parameters. Samples from coupled chains can also be used to construct unbiased estimators.
+};
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Decorative lines.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\node (l1) at ($ (n1.north east) + (0.025\linewidth, 0) $) {};
+\node (l2) at ($ (n3.south east) + (0.025\linewidth, 0) $) {};
+\draw[black] (l1) -- (l2);
+
+\end{scope}
+\end{tikzpicture}
+
+\end{poster}
+
+\end{document}
